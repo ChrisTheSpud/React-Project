@@ -1,0 +1,38 @@
+.btn-decoration {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.btn-decoration:nth-child(3) {
+    margin-inline-end: 3.75rem;
+}
+
+.btn-decoration:hover {
+    filter: brightness(0) saturate(100%) invert(19%) sepia(6%) saturate(0%) hue-rotate(147deg) brightness(97%) contrast(83%);
+}
+
+.drawing-input {
+    display: none;
+}
+
+.drawing-input:checked + .draw-image {
+    filter: brightness(0) saturate(100%) invert(19%) sepia(6%) saturate(0%) hue-rotate(147deg) brightness(97%) contrast(83%);
+}
+
+.label-group {
+    display: flex;
+}
+
+.label-group:last-child {
+    display: flex;
+    margin-inline-start: 3.75rem;
+}
+
+.range-select {
+    width: 5rem;
+    cursor: pointer;
+    margin-inline-end: 3.75rem;
+}
+
+
