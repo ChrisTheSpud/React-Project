@@ -1,13 +1,18 @@
-import redo from '../assets/redo.svg';
+import { DrawingContext } from '../Contexts/DrawingContext';
+import redo1 from '../assets/redo.svg';
 import './GlobalButtons.scss';
+import { useContext } from 'react';
 
-function Redo({redoHandler}) {
+function Redo() {
+
+    const { redo } = useContext(DrawingContext);
+
     return (
         <button
             className='btn-decoration'
-            onClick={redoHandler}
+            onClick={redo}
         >
-            <img src={redo} alt="Redo button"></img>
+            <img src={redo1} alt="Redo button"></img>
         </button>
     );
 }

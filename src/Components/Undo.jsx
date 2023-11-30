@@ -1,12 +1,17 @@
-import undo from '../assets/undo.svg';
+import { DrawingContext } from '../Contexts/DrawingContext';
+import undo1 from '../assets/undo.svg';
 import './GlobalButtons.scss';
+import { useContext } from 'react';
 
-function Undo({undoHandler}) {
+function Undo() {
+
+    const { undo } = useContext(DrawingContext);
+
     return (
         <button
         className='btn-decoration'
-        onClick={undoHandler}>
-            <img src={undo} alt="Undo button"></img>
+        onClick={undo}>
+            <img src={undo1} alt="Undo button"></img>
         </button>
     );
 }

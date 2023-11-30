@@ -1,21 +1,26 @@
+import { useContext } from 'react';
 import filltool from '../assets/filltool.svg';
 import './GlobalButtons.scss';
+import { DrawingContext } from '../Contexts/DrawingContext';
 
 function ColorTools({colorHandler, fillHandler}) {
+
+const { colorPicker, fillCanvas } = useContext(DrawingContext);
+
     return (
         <>
             <label className='label-group'>
                 <input
                     type='color'
                     className='color-input'
-                    onInput={colorHandler}
+                    onInput={colorPicker}
                     id='color-picker'
                 >
                 </input>
             </label> 
             <button 
                 className='btn-decoration'
-                onClick={fillHandler}
+                onClick={fillCanvas}
                 >
                     <img 
                         src={filltool} 

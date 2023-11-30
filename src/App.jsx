@@ -7,9 +7,9 @@ import PenTools from './Components/PenTools';
 import ShapeTools from './Components/ShapeTools';
 import ColorTools from './Components/ColorTools';
 import "./App.scss";
+import { DrawingContext } from './Contexts/DrawingContext';
 
-
-function App({ndo}) {
+function App() {
   const drawCanvasRef = useRef(null);
   const displayCanvasRef = useRef(null);
 
@@ -36,10 +36,10 @@ function App({ndo}) {
 
   let rectStart;
 
-  const getMousePos = (canvas, e) => {
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
+  const getMousePos = (drawCanvasRef, e) => {
+    const rect = drawCanvasRef.getBoundingClientRect();
+    const scaleX = drawCanvasRef.width / rect.width;
+    const scaleY = drawCanvasRef.height / rect.height;
 
     return {
       x: (e.clientX - rect.left) * scaleX,
@@ -47,10 +47,10 @@ function App({ndo}) {
     };
   };
 
-  const getTouchPos = (canvas, e) => {
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
+  const getTouchPos = (drawCanvasRef, e) => {
+    const rect = drawCanvasRef.getBoundingClientRect();
+    const scaleX = drawCanvasRef.width / rect.width;
+    const scaleY = drawCanvasRef.height / rect.height;
 
     return {
       x: (e.touches[0].clientX - rect.left) * scaleX ,
@@ -83,27 +83,27 @@ function App({ndo}) {
   const endDrawing = () => {
     if (drawing) {
       drawing = false;
-
+      drawingNumber ++;
       const { drawCanvas } = getContext();
       const { displayContext } = getContextDisplay();
 
       displayContext.drawImage(drawCanvas, 0, 0);
-      drawingHistory.push(canvas.toDataURL());
+      drawingHistory.push(drawCanvas.toDataURL());
     }
   };
 
   const drawRectangle = (x, y) => {
-    const { context } = getContext();
+    const { context, drawCanvas } = getContext();
 
     const width = x - rectStart.x;
     const height = y - rectStart.y;
   
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
     context.strokeRect(rectStart.x, rectStart.y, width, height);
   };
 
   const drawEllipse = (x, y) => {
-    const { context } = getContext();
+    const { context, drawCanvas } = getContext();
 
     const width = x - rectStart.x;
     const height = y - rectStart.y;
@@ -113,14 +113,14 @@ function App({ndo}) {
     const radiusX = Math.abs(width / 2);
     const radiusY = Math.abs(height / 2);
 
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
     context.beginPath();
     context.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, 2 * Math.PI);
     context.stroke();
   }
 
   const drawTriangle = (x, y) => {
-    const { context } = getContext();
+    const { context , drawCanvas } = getContext();
 
     const sideLength = Math.sqrt(Math.pow(x - rectStart.x, 2) + Math.pow(y - rectStart.y, 2));
 
@@ -134,7 +134,7 @@ function App({ndo}) {
     const x3 = rectStart.x + sideLength * Math.cos(angle - angleOffset);
     const y3 = rectStart.y + sideLength * Math.sin(angle - angleOffset);
 
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
     context.beginPath();
     context.moveTo(rectStart.x, rectStart.y);
     context.lineTo(x2, y2);
@@ -199,9 +199,9 @@ function App({ndo}) {
     const { context, drawCanvas } = getContext();
     const { displayContext } = getContextDisplay();
     colorPicker();
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillRect(0, 0, drawCanvas.width, drawCanvas.height);
     displayContext.drawImage(drawCanvas, 0, 0);
-    drawingHistory.push(canvas.toDataURL());
+    drawingHistory.push(drawCanvas.toDataURL());
     drawingNumber ++;
   }
 
@@ -217,15 +217,16 @@ function App({ndo}) {
   }
 
   const undo = () => {
-    const { context } = getContext();
+    const { context , drawCanvas } = getContext();
     const { displayCanvas, displayContext } = getContextDisplay();
 
     checkNumber = drawingNumber;
+    console.log(checkNumber, drawingNumber);
     redoStates.push(displayCanvas.toDataURL());
 
     if(drawingHistory.length > 0) {
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      displayContext.clearRect(0, 0, canvas.width, canvas.height);
+      context.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+      displayContext.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
       drawingHistory.pop();
       const img = new Image();
       img.src = drawingHistory[drawingHistory.length - 1];
@@ -241,17 +242,17 @@ function App({ndo}) {
       redoStates = [];
     }
 
-    const { context } = getContext();
+    const { context, drawCanvas } = getContext();
     const { displayContext } = getContextDisplay();
 
-    drawingHistory.push(canvas.toDataURL());
+    drawingHistory.push(drawCanvas.toDataURL());
 
     if (redoStates.length > 0) {
       const img = new Image();
       img.src = redoStates.pop();
       img.addEventListener("load", () => {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        displayContext.clearRect(0, 0, canvas.width, canvas.height);
+        context.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+        displayContext.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
         displayContext.drawImage(img, 0, 0);
         context.drawImage(img, 0, 0);
       });
@@ -283,42 +284,38 @@ function App({ndo}) {
   
   return (
     <>
-      <div className="container">
-        <div className='toolbar'>
-          <Undo undoHandler={undo}/>
-          <Redo redoHandler={redo}/>
-          <Reset resetHandler={resetCanvas} />  
-          <PenTools 
-            rangeHandler={strokeSize}
-            eraserHandler={eraser}
-          />
-          <ShapeTools/>
-          <ColorTools
-          colorHandler={colorPicker}
-          fillHandler={fillCanvas}
-          />
+        <div className="container">
+          <DrawingContext.Provider value={{ undo , redo , resetCanvas, strokeSize , eraser, colorPicker, fillCanvas}}>
+          <div className='toolbar'>
+            <Undo/>
+            <Redo/>
+            <Reset/>  
+            <PenTools/>
+            <ShapeTools/>
+            <ColorTools/>
+          </div>
+          </DrawingContext.Provider>
+          <div className="wrapper">
+            <canvas
+              ref={drawCanvasRef}
+              id="draw-canvas"
+              height="1080"
+              width="1920"
+              onMouseDown={startDrawing(false)}
+              onMouseUp={endDrawing}
+              onMouseMove={draw(false)}
+              onTouchStart={startDrawing(true)}
+              onTouchMove={draw(true)}
+              onTouchCancel={endDrawing}
+            />
+            <canvas
+              ref={displayCanvasRef}
+              id="display-canvas"
+              height="1080"
+              width="1920"
+            />
+          </div>
         </div>
-        <div className="wrapper">
-          <canvas
-            ref={drawCanvasRef}
-            id="canvas"
-            height="1080"
-            width="1920"
-            onMouseDown={startDrawing(false)}
-            onMouseUp={endDrawing}
-            onMouseMove={draw(false)}
-            onTouchStart={startDrawing(true)}
-            onTouchMove={draw(true)}
-            onTouchCancel={endDrawing}
-          />
-          <canvas
-            ref={displayCanvasRef}
-            id="display-canvas"
-            height="1080"
-            width="1920"
-          />
-        </div>
-      </div>
     </>
   );
 }

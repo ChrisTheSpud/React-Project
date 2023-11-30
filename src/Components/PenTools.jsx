@@ -1,8 +1,13 @@
 import pentool from '../assets/pentool.svg';
-import eraser from '../assets/eraser.svg';
+import eraser1 from '../assets/eraser.svg';
 import './GlobalButtons.scss';
+import { useContext } from 'react';
+import { DrawingContext } from '../Contexts/DrawingContext';
 
-function PenTools({rangeHandler, eraserHandler, penHandler}) {
+function PenTools() {
+
+    const { strokeSize , eraser } = useContext(DrawingContext);
+
     return (
         <>
             <label className="label-group">
@@ -27,12 +32,12 @@ function PenTools({rangeHandler, eraserHandler, penHandler}) {
                     name="drawingtool" 
                     className="drawing-input"
                     id="eraser"
-                    onClick={eraserHandler}
+                    onClick={eraser}
                 >
                 </input>
                 <img 
                     className="draw-image" 
-                    src={eraser}
+                    src={eraser1}
                     alt="Eraser Tool"
                 >
                 </img>
@@ -45,7 +50,7 @@ function PenTools({rangeHandler, eraserHandler, penHandler}) {
                     min="1"
                     max="25"
                     defaultValue={1}
-                    onChange={rangeHandler}
+                    onChange={strokeSize}
                 >
                 </input>
             </label>
