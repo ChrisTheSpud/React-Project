@@ -1,0 +1,30 @@
+.wrapper {
+    position: relative;
+}
+
+@mixin canvas-dimensions() {
+    width: 90vw;
+    height: 65vh;
+}
+
+#draw-canvas {
+    background-color: transparent;
+    position: absolute;
+    @include canvas-dimensions();
+}
+
+#display-canvas {
+    background-color: #FFF;
+    @include canvas-dimensions();
+}
+
+@media (min-width: 900px) {
+    #draw-canvas, #display-canvas {
+        width: 90vw;
+        height: 80vh;
+    }
+}
+
+
+
+

@@ -1,0 +1,89 @@
+@mixin selection-color() {
+    filter: brightness(0) saturate(100%) invert(19%) sepia(6%) saturate(0%) hue-rotate(147deg) brightness(97%) contrast(83%);
+}
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: #787878;
+    border-radius: 2.5rem; 
+    padding: 0.87rem 0 0.87rem 0;
+    margin-block-end: 2.5rem;
+    gap: 1rem;
+}
+
+.btn-decoration {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.drawing-input {
+    display: none;
+}
+
+.btn-decoration:hover {
+    @include selection-color();
+}
+    
+.drawing-input:checked + .draw-image {
+    @include selection-color();
+}
+
+.draw-image:hover {
+    @include selection-color();
+}
+
+.label-group {
+    display: flex;
+}
+
+.color-input {
+    display: flex;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 58px;
+    height: 58px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+    border: none;
+}
+
+#color-picker::-webkit-color-swatch {
+    border-radius: 15px;
+    border: none;
+}
+
+#color-picker::-moz-color-swatch {
+    border-radius: 15px;
+    border: none;
+}
+
+.range-select {
+    width: 5rem;
+    cursor: pointer;
+}
+
+
+@media (min-width: 1050px) {
+    @mixin defined-margins($inline-start, $inline-end) {
+        margin-inline-start: $inline-start;
+        margin-inline-end: $inline-end;
+    }
+
+    .btn-decoration:nth-child(3) {
+        @include defined-margins(0rem, 3.75rem);
+    }
+
+    .range-select {
+        @include defined-margins(0rem, 3.75rem);
+    }
+
+    .color-input {
+        @include defined-margins(3.75rem, 0rem);
+    }
+}

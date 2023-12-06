@@ -1,4 +1,3 @@
-import "./App.scss";
 import DrawingCanvas from './Components/DrawingCanvas';
 
 function App() {
@@ -6,7 +5,7 @@ function App() {
   return (
     <>
       <div className="container">
-        <DrawingCanvas></DrawingCanvas>
+        <DrawingCanvas/>
       </div>
     </>
   );
