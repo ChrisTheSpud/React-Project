@@ -1,11 +1,11 @@
 import './DrawingCanvas.scss';
-import { canvasRef, DrawingContext } from '../Contexts/DrawingContext';
+import { useCanvasRef, DrawingContext } from '../Contexts/DrawingContext';
 import { useEffect } from 'react';
 import { signal } from '@preact/signals';
 import Toolbar from './Toolbar';
 
 function DrawingCanvas() { 
-    const { drawCanvasRef, displayCanvasRef, getContext, getContextDisplay } = canvasRef();
+    const { drawCanvasRef, displayCanvasRef, getContext, getContextDisplay } = useCanvasRef();
 
       let drawing = signal();
       drawing = false;
@@ -91,7 +91,7 @@ function DrawingCanvas() {
 
         if(document.getElementById('solid-fill').checked) {
           context.fillRect(rectStart.x, rectStart.y, width, height);
-        };
+        }
       }
     
       const drawEllipse = (x, y) => {
@@ -146,7 +146,7 @@ function DrawingCanvas() {
       const draw = (isTouch) => (e) => {
         if (!drawing) return;
     
-        if(document.getElementById('pen').checked) {
+        if(pen.checked) {
           colorPicker();
         }
     
@@ -162,13 +162,13 @@ function DrawingCanvas() {
           
         let { x , y } = position;
     
-        if (square.checked) {
+        if (document.getElementById('square').checked) {
           drawRectangle(x, y);
         
-        } else if (ellipse.checked) {
+        } else if (document.getElementById('ellipse').checked) {
           drawEllipse(x,y);
     
-        } else if (triangle.checked) {
+        } else if (document.getElementById('triangle').checked) {
           drawTriangle(x,y);
     
         } else {
@@ -180,13 +180,13 @@ function DrawingCanvas() {
     
       const eraser = () => {
         const { context } = getContext();
-        context.strokeStyle = "white";
-        context.fillStyle = "white";
+        context.strokeStyle = 'white';
+        context.fillStyle = 'white';
       }
     
       const strokeSize = () => {
         const { context } = getContext();
-        context.lineWidth = document.getElementById('lineWidth').value;
+        context.lineWidth = lineWidth.value;
       }
     
       const fillCanvas = () => {
@@ -224,7 +224,7 @@ function DrawingCanvas() {
           drawingHistory.pop();
           const img = new Image();
           img.src = drawingHistory[drawingHistory.length - 1];
-          img.addEventListener("load", () => {
+          img.addEventListener('load', () => {
             displayContext.drawImage(img, 0, 0);
             context.drawImage(img, 0, 0);
           });
@@ -244,7 +244,7 @@ function DrawingCanvas() {
         if (redoStates.length > 0) {
           const img = new Image();
           img.src = redoStates.pop();
-          img.addEventListener("load", () => {
+          img.addEventListener('load', () => {
             context.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
             displayContext.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
             displayContext.drawImage(img, 0, 0);
@@ -253,39 +253,33 @@ function DrawingCanvas() {
         };
       };
 
-      window.addEventListener("keydown", (ev) => {
-        if (ev.key === "z" && ev.ctrlKey) {
+      window.addEventListener('keydown', (ev) => {
+        if (ev.key === 'z' && (ev.ctrlKey || ev.metaKey)) {
             undo();
-        };
+        }
+      });
     
-        if (ev.key === "z" && ev.metaKey) {
-            undo();
-        };
-      })
-    
-      window.addEventListener("keydown", (ev) => {
-          if (ev.key === "y" && ev.ctrlKey) {
+      window.addEventListener('keydown', (ev) => {
+          if (ev.key === 'y' && (ev.ctrlKey || ev.metaKey)) {
               redo();
-          } else if (ev.key === "y" && ev.metaKey) {
-              redo();
-          };
+          }
       });
     
       useEffect(() => {
-        window.addEventListener("mouseup", endDrawing);
-        window.addEventListener("touchend", endDrawing);
+        window.addEventListener('mouseup', endDrawing);
+        window.addEventListener('touchend', endDrawing);
       }, []);
 
     return (
         <>
           <DrawingContext.Provider value={{undo , redo , resetCanvas, strokeSize , eraser, colorPicker, fillCanvas}}>
             <Toolbar/>
-            <div className="wrapper">
+            <div className='wrapper'>
                 <canvas
                 ref={drawCanvasRef}
-                id="draw-canvas"
-                height="1080"
-                width="1920"
+                id='draw-canvas'
+                height='1080'
+                width='1920'
                 onMouseDown={startDrawing(false)}
                 onMouseUp={endDrawing}
                 onMouseMove={draw(false)}
@@ -295,9 +289,9 @@ function DrawingCanvas() {
                 />
                 <canvas
                 ref={displayCanvasRef}
-                id="display-canvas"
-                height="1080"
-                width="1920"
+                id='display-canvas'
+                height='1080'
+                width='1920'
                 />
           </div>
           </DrawingContext.Provider>

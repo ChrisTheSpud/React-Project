@@ -95,6 +95,7 @@ function Toolbar() {
                 <img 
                     className='draw-image' 
                     src={square}
+                    alt = 'Square Tool'
                 />
             </label>
             <label className='label-group'>
@@ -107,6 +108,7 @@ function Toolbar() {
                 <img 
                     className='draw-image' 
                     src={ellipse}
+                    alt='Ellipse Tool'
                 />
             </label>
             <label className='label-group'>
@@ -119,6 +121,7 @@ function Toolbar() {
                 <img 
                     className='draw-image' 
                     src={triangle}
+                    alt='Triangle Tool'
                 />
             </label>
             <label className='label-group'>
@@ -147,6 +150,7 @@ function Toolbar() {
                 <img 
                     className='draw-image'
                     src={fillcheck}
+                    alt='Fill tool'
                 />
             </label>
         </div>

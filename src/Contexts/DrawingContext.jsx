@@ -2,7 +2,7 @@ import { createContext, useRef, useCallback, useContext } from "react";
 
 export const DrawingContext = createContext();
 
-export const canvasRef = () => {
+export const useCanvasRef = () => {
     const drawCanvasRef = useRef(null);
     const displayCanvasRef = useRef(null);
 
