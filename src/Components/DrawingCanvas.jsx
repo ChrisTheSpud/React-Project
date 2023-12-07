@@ -88,7 +88,11 @@ function DrawingCanvas() {
       
         context.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
         context.strokeRect(rectStart.x, rectStart.y, width, height);
-      };
+
+        if(document.getElementById('solid-fill').checked) {
+          context.fillRect(rectStart.x, rectStart.y, width, height);
+        };
+      }
     
       const drawEllipse = (x, y) => {
         const { context, drawCanvas } = getContext();
@@ -105,6 +109,10 @@ function DrawingCanvas() {
         context.beginPath();
         context.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, 2 * Math.PI);
         context.stroke();
+
+        if(document.getElementById('solid-fill').checked) {
+          context.fill();
+        };
       }
     
       const drawTriangle = (x, y) => {
@@ -129,6 +137,10 @@ function DrawingCanvas() {
         context.lineTo(x3, y3);
         context.closePath();
         context.stroke();
+
+        if(document.getElementById('solid-fill').checked) {
+          context.fill();
+        };
       }
     
       const draw = (isTouch) => (e) => {

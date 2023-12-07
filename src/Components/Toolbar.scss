@@ -37,6 +37,7 @@
 
 .label-group {
     display: flex;
+    cursor: pointer;
 }
 
 .color-input {
@@ -68,6 +69,13 @@
     cursor: pointer;
 }
 
+.checkbox-input {
+    display: none;
+}
+
+.checkbox-input:checked + .draw-image {
+    @include selection-color();
+}
 
 @media (min-width: 1050px) {
     @mixin defined-margins($inline-start, $inline-end) {
@@ -87,3 +95,4 @@
         @include defined-margins(3.75rem, 0rem);
     }
 }
+

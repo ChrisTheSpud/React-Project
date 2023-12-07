@@ -9,10 +9,11 @@ import square from '../assets/squareshape.svg';
 import ellipse from '../assets/ellipseshape.svg';
 import triangle from '../assets/triangleshape.svg';
 import filltool from '../assets/filltool.svg';
+import fillcheck from '../assets/fillcheck.svg'
 
 function Toolbar() {
 
-    const { undo, redo, resetCanvas, strokeSize , eraser, colorPicker, fillCanvas } = useDrawingContext();
+    const { undo, redo, resetCanvas, strokeSize , eraser, colorPicker, fillCanvas, downloadFunction } = useDrawingContext();
 
     return (
         <>
@@ -21,94 +22,104 @@ function Toolbar() {
             className='btn-decoration'
             onClick={undo}
             >
-                <img src={undosvg} alt="Undo button"></img>
+                <img 
+                    src={undosvg} 
+                    alt='Undo button'
+                />
             </button>
             <button
             className='btn-decoration'
             onClick={redo}
             >
-            <img src={redosvg} alt="Redo button"></img>
+            <img 
+                src={redosvg} 
+                alt='Redo button'
+            />
             </button>
             <button
                 className='btn-decoration'
                 onClick={resetCanvas}
             >
-                <img src={resetsvg} alt="Reset button"></img>
+                <img 
+                    src={resetsvg} 
+                    alt='Reset button'
+                />
             </button>
-            <label className="label-group">
+            <label className='label-group'>
                 <input 
-                    type="radio" 
-                    name="drawingtool" 
-                    className="drawing-input"
-                    id="pen"
+                    type='radio' 
+                    name='drawingtool' 
+                    className='drawing-input'
+                    id='pen'
                     defaultChecked
-                >
-                </input>
+                />
                 <img 
-                    className="draw-image" 
+                    className='draw-image' 
                     src={pentoolsvg}
-                    alt="Pen tool"
-                >
-                </img>
+                    alt='Pen tool'
+                />
             </label>
-            <label className="label-group">
+            <label className='label-group'>
                 <input 
-                    type="radio" 
-                    name="drawingtool" 
-                    className="drawing-input"
-                    id="eraser"
+                    type='radio' 
+                    name='drawingtool' 
+                    className='drawing-input'
+                    id='eraser'
                     onClick={eraser}
-                >
-                </input>
+                />
                 <img 
-                    className="draw-image" 
+                    className='draw-image' 
                     src={erasersvg}
-                    alt="Eraser Tool"
-                    id="eraser-tool"
-                >
-                </img>
+                    alt='Eraser Tool'
+                    id='eraser-tool'
+                />
             </label>
-            <label className="label-group">
+            <label className='label-group'>
                 <input 
-                    className="range-select"
-                    id="lineWidth"
-                    type="range"
-                    min="1"
-                    max="15"
+                    className='range-select'
+                    id='lineWidth'
+                    type='range'
+                    min='1'
+                    max='15'
                     defaultValue={1}
                     onChange={strokeSize}
-                >
-                </input>
+                />
             </label>
-            <label className="label-group">
+            <label className='label-group'>
                 <input 
-                    type="radio" 
-                    name="drawingtool" 
-                    className="drawing-input"
-                    id="square"
-                >
-                </input>
-                <img className="draw-image" src={square}></img>
+                    type='radio' 
+                    name='drawingtool' 
+                    className='drawing-input'
+                    id='square'
+                />
+                <img 
+                    className='draw-image' 
+                    src={square}
+                />
             </label>
-            <label className="label-group">
+            <label className='label-group'>
                 <input 
-                    type="radio" 
-                    name="drawingtool" 
-                    className="drawing-input"
-                    id="ellipse"
-                    >
-                </input>
-                <img className="draw-image" src={ellipse}></img>
+                    type='radio' 
+                    name='drawingtool' 
+                    className='drawing-input'
+                    id='ellipse'
+                    />
+                <img 
+                    className='draw-image' 
+                    src={ellipse}
+                />
             </label>
-            <label className="label-group">
+            <label className='label-group'>
                 <input 
-                    type="radio" 
-                    name="drawingtool" 
-                    className="drawing-input"
-                    id="triangle"
-                    >
-                </input>
-                <img className="draw-image" src={triangle}></img>
+                    type='radio' 
+                    name='drawingtool' 
+                    className='drawing-input'
+                    id='triangle'
+                    />
+                <img 
+                    className='draw-image' 
+                    src={triangle}
+                />
             </label>
             <label className='label-group'>
                 <input
@@ -116,8 +127,7 @@ function Toolbar() {
                     className='color-input'
                     onInput={colorPicker}
                     id='color-picker'
-                >
-                </input>
+                />
             </label> 
             <button 
                 className='btn-decoration'
@@ -125,10 +135,20 @@ function Toolbar() {
                 >
                     <img 
                         src={filltool} 
-                        alt="Fill Tool"
-                        >
-                    </img>
+                        alt='Fill Tool'
+                    />
             </button>
+            <label className='label-group'>
+                <input 
+                    className='checkbox-input'
+                    type='checkbox'
+                    id='solid-fill'
+                />
+                <img 
+                    className='draw-image'
+                    src={fillcheck}
+                />
+            </label>
         </div>
      </>
     );
